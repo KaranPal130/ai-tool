@@ -12,7 +12,7 @@ WORKDIR     /home
 
 COPY        ./requirements.txt ./
 
-COPY        * .
+COPY        * ./app/
 
 RUN         pip3 install -r requirements.txt
 
