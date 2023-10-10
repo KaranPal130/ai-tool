@@ -10,7 +10,7 @@ RUN pip3 install --upgrade pip
 
 WORKDIR     /home
 
-COPY        ./requirements.txt .
+COPY        ./requirements.txt ./
 
 COPY        * .
 
