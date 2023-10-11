@@ -21,8 +21,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-processor = BlipProcessor.from_pretrained("Salesforce/blip2-flan-t5-xl")
-model = Blip2ForConditionalGeneration.from_pretrained("Salesforce/blip2-flan-t5-xl")
+processor = BlipProcessor.from_pretrained("Salesforce/blip2-flan-t5-xxl")
+model = Blip2ForConditionalGeneration.from_pretrained("Salesforce/blip2-flan-t5-xxl")
  
 os.environ["_BARD_API_KEY"] = BARD_KEY  # type: ignore
 
