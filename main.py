@@ -79,7 +79,7 @@ async def UploadImage(file: UploadFile):
 
         # unconditional image captioning
         inputs = processor(images[0], return_tensors="pt")
-        out = model.generate(**inputs,**gen_kwargs)  # type: ignore
+        out = model.generate(**inputs)  # type: ignore
         return processor.decode(out[0], skip_special_tokens=True)
 
     caption = predict_step([destination])
