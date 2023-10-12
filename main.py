@@ -72,9 +72,14 @@ async def UploadImage(file: UploadFile):
         #
         # out = model.generate(**inputs)  # type: ignore
 
+        max_length = 4000  # Increase max_length for longer captions
+        num_beams = 10
+        length_penalty = 2.0  # Adjust length penalty as needed
+        gen_kwargs = {"max_length": max_length, "num_beams": num_beams, "length_penalty": length_penalty}
+
         # unconditional image captioning
         inputs = processor(images[0], return_tensors="pt")
-        out = model.generate(**inputs)  # type: ignore
+        out = model.generate(**inputs,**gen_kwargs)  # type: ignore
         return processor.decode(out[0], skip_special_tokens=True)
 
     caption = predict_step([destination])
