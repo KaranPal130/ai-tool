@@ -105,3 +105,9 @@ def poeticCaption(caption: Caption):
 @app.post("/quote")
 def createQuote(caption: Caption):
     return Bard().get_answer(str(f'Find a few quotes related to this caption {caption.caption}'))['content']
+
+@app.post("/emotion")
+def emotionCaption(emotion: EmotionParameter):
+    return {
+        'emotion_caption': Bard().get_answer(str(f'Create a few captions with emojis and hashtags for the {emotion.image_description}, make sure that the captions convey {emotion.emotion} emotion'))['content']
+    }
