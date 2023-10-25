@@ -30,6 +30,10 @@ os.environ["_BARD_API_KEY"] = BARD_KEY  # type: ignore
 class Caption(BaseModel):
     caption: str
 
+class EmotionParameter(BaseModel):
+    image_description: str
+    emotion: str
+
 
 @app.get("/")
 async def index():
