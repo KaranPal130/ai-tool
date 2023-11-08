@@ -83,7 +83,7 @@ async def UploadImage(file: UploadFile):
 
         # unconditional image captioning
         inputs = processor(images[0], return_tensors="pt")
-        out = model.generate(**inputs)  # type: ignore
+        out = model.generate(**inputs, num_beams=5, max_new_tokens=30, repetition_penalty=1.0, length_penalty=1.0, temperature=1) 
         return processor.decode(out[0], skip_special_tokens=True)
 
     caption = predict_step([destination])
@@ -95,7 +95,6 @@ async def UploadImage(file: UploadFile):
         'hash-tags': hashtag,
         'captions': caption2
     }
-
 
 def creatingCaption(caption):
     return Bard().get_answer(str(f'Create a few captions with emojis and hashtags for the {caption}'))['content']
@@ -114,4 +113,29 @@ def createQuote(caption: Caption):
 def emotionCaption(emotion: EmotionParameter):
     return {
         'emotion_caption': Bard().get_answer(str(f'Create a few captions with emojis and hashtags for the {emotion.image_description}, make sure that the captions convey {emotion.emotion} emotion'))['content']
+    }
+
+
+@app.post("/recheckCaption") 
+def recheckCaption(file: UploadFile):
+    upload_dir = os.path.join(os.getcwd(), "uploads")
+    # Create the upload directory if it doesn't exist
+    if not os.path.exists(upload_dir):
+        os.makedirs(upload_dir)
+
+    # get the destination path
+    
+    destination = os.path.join(upload_dir, file.filename)  # type: ignore
+    print(destination)
+
+    # copy the file contents
+    with open(destination, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+        
+    image = open(destination, "rb").read()
+    bard_answer = Bard().ask_about_image('Create a few captions with emojis and hashtags for the', image)
+    print(bard_answer['content'])
+    caption2 = creatingCaption(bard_answer['content'])
+    return {
+        'caption': bard_answer['content']
     }
